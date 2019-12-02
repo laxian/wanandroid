@@ -29,3 +29,11 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+ext {
+    // Sdk and tools
+    minSdkVersion = 21
+    targetSdkVersion = 29
+    compileSdkVersion = 29
+    buildToolsVersion = '29.0.2'
+    room_version = "2.2.2"
+}

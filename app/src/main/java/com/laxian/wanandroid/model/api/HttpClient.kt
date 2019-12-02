@@ -12,7 +12,6 @@ import java.io.File
 
 object HttpClient : BaseRetrofitClient() {
 
-
     val service by lazy { getService(WanService::class.java, WanService.BASE_URL) }
 
     private val cookieJar by lazy {
@@ -22,7 +21,7 @@ object HttpClient : BaseRetrofitClient() {
         )
     }
 
-    override fun handleBuilder(builder: OkHttpClient.Builder) {
+    override fun configClient(builder: OkHttpClient.Builder) {
 
         val httpCacheDirectory = File(App.CONTEXT.cacheDir, "responses")
         val cacheSize = 10 * 1024 * 1024L // 10 MiB
@@ -54,6 +53,4 @@ object HttpClient : BaseRetrofitClient() {
                 response
             }
     }
-
-
 }

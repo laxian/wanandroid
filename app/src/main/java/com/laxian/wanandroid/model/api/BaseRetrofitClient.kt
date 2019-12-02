@@ -27,12 +27,12 @@ abstract class BaseRetrofitClient {
             builder.addInterceptor(logging)
                 .connectTimeout(TIME_OUT.toLong(), TimeUnit.SECONDS)
 
-            handleBuilder(builder)
+            configClient(builder)
 
             return builder.build()
         }
 
-    protected abstract fun handleBuilder(builder: OkHttpClient.Builder)
+    protected abstract fun configClient(builder: OkHttpClient.Builder)
 
     fun <S> getService(serviceClass: Class<S>, baseUrl: String): S {
         return Retrofit.Builder()
