@@ -27,15 +27,18 @@ abstract class BaseVMActivity<VM : BaseViewModel> : AppCompatActivity(), Lifecyc
     abstract fun initView()
     abstract fun initData()
 
+    abstract fun getVM(): VM?
+
     private fun initVM() {
-        providerVMClass()?.let {
+        getVM()?.apply { mViewModel = this }
+        val providerVMClass = providerVMClass()
+        providerVMClass?.let {
             mViewModel = ViewModelProvider(this).get(it)
             mViewModel.let(lifecycle::addObserver)
         }
     }
 
     open fun providerVMClass(): Class<VM>? = null
-
 
     open fun startObserve() {
         mViewModel.mException.observe(this, Observer { it?.let { onError(it) } })
