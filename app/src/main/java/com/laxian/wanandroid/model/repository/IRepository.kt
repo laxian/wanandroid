@@ -13,9 +13,10 @@ suspend fun <T : Any> safeCall(call: suspend () -> Result.Success<T>): Result<T>
         throw e
     }
 
-// errorCode == 0 代表请求成功，否则，请求错误
-fun <T : WanResponse<*>> successOrThrow(response: T): Result.Success<T> {
+// errorCode == 0 代表请求成功，否则，请求错误，抛出异常
+// 如果需要在ViewModel里自定义处理errorCode，不要使用此方法
+fun <Response : WanResponse<Data>, Data : Any> successOrThrow(response: Response): Result.Success<Data> {
     val errorCode = response.errorCode
     if (errorCode != 0) throw response.err()
-    return Result.Success(response)
+    return Result.Success(response.data)
 }

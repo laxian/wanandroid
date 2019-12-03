@@ -1,5 +1,6 @@
 package com.laxian.wanandroid.ui.login
 
+import android.app.ProgressDialog
 import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
@@ -34,6 +35,7 @@ class LoginActivity : BaseVMActivity<LoginViewModel>(), View.OnClickListener {
     override fun initData() {
         loginViewModel.apply {
             userData.observe(this@LoginActivity, Observer {
+                dismissProgressDialog()
                 toHome()
             })
             lifecycle::addObserver
@@ -41,6 +43,7 @@ class LoginActivity : BaseVMActivity<LoginViewModel>(), View.OnClickListener {
     }
 
     override fun onError(e: Throwable) {
+        dismissProgressDialog()
         toast(e.message ?: e.toString())
     }
 
@@ -56,8 +59,20 @@ class LoginActivity : BaseVMActivity<LoginViewModel>(), View.OnClickListener {
         } else if (et_password.text.isNullOrEmpty()) {
             textInputLayoutPassword.error = "密码不能为空"
         } else {
+            showProgressDialog()
             loginViewModel.login(et_username.text.toString(), et_password.text.toString())
         }
+    }
+
+    private var progressDialog: ProgressDialog? = null
+    private fun showProgressDialog() {
+        if (progressDialog == null)
+            progressDialog = ProgressDialog(this)
+        progressDialog?.show()
+    }
+
+    private fun dismissProgressDialog() {
+        progressDialog?.dismiss()
     }
 
     private fun toHome() = pushAndReplace(MainActivity::class.java)

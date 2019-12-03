@@ -15,7 +15,11 @@ abstract class BaseVMFragment<VM : BaseViewModel> : androidx.fragment.app.Fragme
 
     protected lateinit var mViewModel: VM
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(getLayoutResId(), container, false)
     }
 
@@ -28,7 +32,7 @@ abstract class BaseVMFragment<VM : BaseViewModel> : androidx.fragment.app.Fragme
     }
 
     open fun startObserve() {
-        mViewModel.mException.observe(this, Observer { it?.let { onError(it) } })
+        mViewModel.mException.observe(viewLifecycleOwner, Observer { it?.let { onError(it) } })
     }
 
     open fun onError(e: Throwable) {}
@@ -39,7 +43,10 @@ abstract class BaseVMFragment<VM : BaseViewModel> : androidx.fragment.app.Fragme
 
     abstract fun initData()
 
+    abstract fun getVM(): VM?
+
     private fun initVM() {
+        getVM()?.let { mViewModel = it }
         providerVMClass()?.let {
             mViewModel = ViewModelProviders.of(this).get(it)
             lifecycle.addObserver(mViewModel)

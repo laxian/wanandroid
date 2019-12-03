@@ -2,12 +2,12 @@ package com.laxian.wanandroid.model.repository
 
 import com.laxian.wanandroid.model.api.HttpClient
 import com.laxian.wanandroid.model.api.Result
-import com.laxian.wanandroid.model.bean.User
+import com.laxian.wanandroid.model.bean.ArticleList
 
-class LoginRepository : IRepository {
-    suspend fun login(username: String, password: String): Result<User> {
+class HomeRepository : IRepository {
+    suspend fun getHomeArticles(page: Int): Result<ArticleList> {
         return successOrThrow(
-            HttpClient.service.login(username, password)
+            HttpClient.service.getHomeArticles(page)
                 .await()
         )
     }

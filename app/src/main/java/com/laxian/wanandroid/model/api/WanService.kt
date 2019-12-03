@@ -1,6 +1,7 @@
 package com.laxian.wanandroid.model.api
 
-import com.laxian.wanandroid.model.User
+import com.laxian.wanandroid.model.bean.ArticleList
+import com.laxian.wanandroid.model.bean.User
 import com.laxian.wanandroid.model.bean.WanResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
@@ -13,11 +14,7 @@ interface WanService {
 
     @FormUrlEncoded
     @POST("/user/login")
-    suspend fun login(@Field("username") userName: String, @Field("password") passWord: String): WanResponse<User>
-
-    @FormUrlEncoded
-    @POST("/user/login")
-    fun login2(@Field("username") userName: String, @Field("password") passWord: String): Deferred<WanResponse<User>>
+    fun login(@Field("username") userName: String, @Field("password") passWord: String): Deferred<WanResponse<User>>
 
     @GET("/user/logout/json")
     suspend fun logOut(): WanResponse<Any>
@@ -34,17 +31,17 @@ interface WanService {
     @POST("/lg/user_article/add/json")
     suspend fun shareArticle(@Field("title") title: String, @Field("link") url: String): WanResponse<String>
 
-//    @GET("/article/list/{page}/json")
-//    suspend fun getHomeArticles(@Path("page") page: Int): WanResponse<ArticleList>
+    @GET("/article/list/{page}/json")
+    fun getSystemTypeDetail(@Path("page") page: Int, @Query("cid") cid: Int): Deferred<WanResponse<ArticleList>>
+
+    @GET("/article/list/{page}/json")
+    fun getHomeArticles(@Path("page") page: Int): Deferred<WanResponse<ArticleList>>
 //
 //    @GET("/banner/json")
 //    suspend fun getBanner(): WanResponse<List<Banner>>
 //
 //    @GET("/tree/json")
 //    suspend fun getSystemType(): WanResponse<List<SystemParent>>
-//
-//    @GET("/article/list/{page}/json")
-//    suspend fun getSystemTypeDetail(@Path("page") page: Int, @Query("cid") cid: Int): WanResponse<ArticleList>
 //
 //    @GET("/navi/json")
 //    suspend fun getNavigation(): WanResponse<List<Navigation>>

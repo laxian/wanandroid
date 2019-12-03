@@ -1,43 +1,39 @@
 package com.laxian.wanandroid.ui.home
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment
+import com.laxian.ktx.base.BaseVMFragment
+import com.laxian.ktx.ext.toast
 import com.laxian.wanandroid.R
+import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseVMFragment<HomeViewModel>() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by viewModel()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+    override fun getLayoutResId(): Int = R.layout.fragment_home
+
+    override fun initView() {
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initData() {
+        homeViewModel.getHomeArticles(10000)
+    }
 
-        view.findViewById<View>(R.id.button_home).setOnClickListener {
-            val action = HomeFragmentDirections
-                .actionHomeFragmentToHomeSecondFragment("From HomeFragment")
-            NavHostFragment.findNavController(this@HomeFragment)
-                .navigate(action)
+    override fun startObserve() {
+        super.startObserve()
+        homeViewModel.apply {
+            text.observe(this@HomeFragment, Observer {
+                text_home.text = it.toString()
+            })
         }
     }
+
+    override fun onError(e: Throwable) {
+        super.onError(e)
+        context?.let { toast(it, e.message ?: e.toString()) }
+    }
+
+    override fun getVM(): HomeViewModel? = homeViewModel
 }

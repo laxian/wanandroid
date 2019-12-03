@@ -1,4 +1,4 @@
-package com.laxian.wanandroid.model
+package com.laxian.wanandroid.model.bean
 
 data class User(
     val password: String = "",
