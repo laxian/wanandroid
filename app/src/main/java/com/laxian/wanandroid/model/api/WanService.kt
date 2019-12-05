@@ -1,6 +1,7 @@
 package com.laxian.wanandroid.model.api
 
 import com.laxian.wanandroid.model.bean.ArticleList
+import com.laxian.wanandroid.model.bean.Banner
 import com.laxian.wanandroid.model.bean.User
 import com.laxian.wanandroid.model.bean.WanResponse
 import kotlinx.coroutines.Deferred
@@ -37,8 +38,8 @@ interface WanService {
     @GET("/article/list/{page}/json")
     fun getHomeArticles(@Path("page") page: Int): Deferred<WanResponse<ArticleList>>
 //
-//    @GET("/banner/json")
-//    suspend fun getBanner(): WanResponse<List<Banner>>
+    @GET("/banner/json")
+    fun getBanner(): Deferred<WanResponse<List<Banner>>>
 //
 //    @GET("/tree/json")
 //    suspend fun getSystemType(): WanResponse<List<SystemParent>>

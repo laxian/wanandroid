@@ -2,7 +2,7 @@ package com.laxian.wanandroid.model.bean
 
 data class ArticleList(
     val curPage: Int,
-    val datas: List<Data>,
+    val datas: List<Article>,
     val offset: Int,
     val over: Boolean,
     val pageCount: Int,
@@ -10,7 +10,7 @@ data class ArticleList(
     val total: Int
 )
 
-data class Data(
+data class Article(
     val apkLink: String,
     val audit: Int,
     val author: String,
